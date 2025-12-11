@@ -16,22 +16,25 @@ RoboEscape/
 │
 ├── game/                # 게임 엔진
 │   ├── engine.py        # 메인 게임 루프 및 상태 관리
-│   ├── level.py         # 맵 생성 및 관리
+│   ├── level.py         # 6개 스테이지 맵 생성
 │   ├── grid.py          # 그리드 시스템 및 좌표 변환
-│   ├── player.py        # 플레이어 로직
-│   ├── ui.py            # HUD 및 UI
-│   ├── particles.py     # 파티클 이펙트
-│   └── enemies/         # 적 AI
-│       ├── __init__.py  # 기본 Enemy 클래스
-│       ├── bug.py       # Bug 알고리즘 적들
-│       └── apf.py       # APF 알고리즘 적
+│   ├── player.py        # 플레이어 로직 (이동, 스킬)
+│   ├── ui.py            # HUD, 미니맵, 게임오버 화면
+│   ├── particles.py     # 파티클 이펙트 시스템
+│   ├── sound.py         # 사운드 시스템
+│   └── enemies/         # 적 AI (7종)
+│       ├── __init__.py  # EnemyBase 클래스
+│       ├── bug.py       # Bug1, Bug2, TangentBug
+│       ├── apf.py       # APF (로컬 미니멈 감지)
+│       ├── prm_rrt.py   # PRM, RRT (시각화)
+│       └── belief.py    # Belief Filter (히트맵)
 │
-└── algos/               # Path-Planning 알고리즘
+└── algos/               # Path-Planning 알고리즘 구현
     ├── bug.py           # Bug1, Bug2, Tangent Bug
     ├── apf.py           # Artificial Potential Field
-    ├── prm.py           # (예정) Probabilistic Roadmap
-    ├── rrt.py           # (예정) Rapidly-exploring Random Tree
-    └── belief.py        # (예정) Bayesian Localization
+    ├── prm.py           # Probabilistic Roadmap (A*)
+    ├── rrt.py           # Rapidly-exploring Random Tree
+    └── belief.py        # Bayesian Localization
 ```
 
 ## 🎯 구현된 알고리즘
@@ -128,10 +131,10 @@ def check_collision_circle(x, y, radius, grid_map):
 
 | 스킬 | 키 | 쿨타임 | 효과 |
 |------|-----|---------|------|
-| 대시 | Shift | 2초 | 빠른 이동, 무적 아님 |
-| 장벽 | E | 5초 | 임시 벽 3개 설치 (8초 지속) |
-| 노이즈 | Q | 10초 | Belief 적 교란 (예정) |
-| 슬로우모션 | Space | 15초 | 시간 느리게 (예정) |
+| 대시 | Shift | 2.5초 | 빠른 이동, 무적 아님 |
+| 장벽 | E | 6초 | 임시 벽 3개 설치 (7초 지속) |
+| 노이즈 | Q | 12초 | Belief 적 센서 교란 (2.5초) |
+| 슬로우모션 | Space | 18초 | 시간 느리게 (2초) |
 
 ## 📊 성능 최적화
 
@@ -199,18 +202,18 @@ def _generate_stage4(self):
 
 ```python
 # 플레이어
-PLAYER_SPEED = 200          # 이동 속도
+PLAYER_SPEED = 180          # 이동 속도 (난이도 상승)
 PLAYER_MAX_HEALTH = 3       # 체력
-PLAYER_DASH_COOLDOWN = 2.0  # 대시 쿨타임
+PLAYER_DASH_COOLDOWN = 2.5  # 대시 쿨타임
 
 # 적
-ENEMY_APF_SPEED = 120       # APF 속도
-APF_ATTRACT_GAIN = 1.0      # 인력 강도
-APF_REPULSE_GAIN = 100.0    # 척력 강도
+ENEMY_APF_SPEED = 135       # APF 속도 (난이도 상승)
+APF_ATTRACT_GAIN = 1.2      # 인력 강도
+APF_REPULSE_GAIN = 90.0     # 척력 강도
 
 # 스킬
-SKILL_WALL_COOLDOWN = 5.0   # 장벽 쿨타임
-SKILL_WALL_DURATION = 8.0   # 장벽 지속시간
+SKILL_WALL_COOLDOWN = 6.0   # 장벽 쿨타임
+SKILL_WALL_DURATION = 7.0   # 장벽 지속시간
 ```
 
 ## 🐛 디버그 모드
@@ -224,28 +227,29 @@ DEBUG_SHOW_BELIEF = False   # Belief 분포 표시 (예정)
 DEBUG_SHOW_APF_FIELD = False # APF 필드 시각화 (예정)
 ```
 
-## 📈 향후 계획
+## 📈 개발 현황
 
-### 단기 (v1.0)
-- [x] Bug 알고리즘 (Bug1, Bug2, Tangent)
-- [x] APF 알고리즘
-- [x] 기본 UI/HUD
-- [x] 파티클 이펙트
-- [ ] 사운드 효과
-- [ ] 튜토리얼 모드
+### ✅ 완료된 기능 (v1.0)
+- [x] 7가지 알고리즘 (Bug1/2/Tangent, APF, PRM, RRT, Belief)
+- [x] 6개 스테이지 + 보스전 + 무한 모드
+- [x] 완전한 UI/HUD (미니맵, 통계, 스테이지 진행)
+- [x] 파티클 이펙트 시스템
+- [x] 사운드 시스템 (옵셔널)
+- [x] 실시간 알고리즘 시각화 (PRM 그래프, RRT 트리, Belief 히트맵)
+- [x] 스킬 시스템 (대시, 벽, 노이즈, 슬로우모션)
+- [x] 난이도 조정 및 최적화
+- [x] 5종 완전 문서화
 
-### 중기 (v2.0)
-- [ ] PRM (Probabilistic Roadmap) 적
-- [ ] RRT (Rapidly-exploring Random Tree) 적
-- [ ] Belief/Kalman Filter 적
-- [ ] 슬로우 모션 구현
-- [ ] 더 많은 스테이지
+### 향후 확장 아이디어
 
-### 장기 (v3.0)
-- [ ] 멀티플레이어 (협동)
-- [ ] 랭킹 시스템
+- [ ] D*/D* Lite 동적 재계획 알고리즘
+- [ ] Hybrid A* (자동차 경로 계획)
+- [ ] 강화학습 기반 적 AI
+- [ ] 멀티플레이어 협동 모드
+- [ ] 리더보드 및 랭킹 시스템
 - [ ] 커스텀 맵 에디터
-- [ ] 모바일 포팅
+- [ ] 스프라이트 아트 업그레이드
+- [ ] 모바일/웹 포팅
 
 ## 🎓 교육적 가치
 
