@@ -516,6 +516,6 @@ python main.py
 
 Made with 💜 for Robotics & Game Development Education
 
-[![Star this repo](https://img.shields.io/badge/⭐-Star_this_repo-yellow?style=for-the-badge)](https://github.com/yourusername/roboescape-path-planning)
+[![Star this repo](https://img.shields.io/badge/⭐-Star_this_repo-yellow?style=for-the-badge)](https://github.com/Lova-clover/roboescape-path-planning)
 
 </div>
