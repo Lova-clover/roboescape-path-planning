@@ -182,30 +182,32 @@ class Level:
             self.grid_map[12][i] = TILE_WALL
     
     def _generate_stage6(self):
-        """스테이지 6: 보스전 - 중앙 아레나"""
+        """스테이지 6: 보스전 - 넓은 아레나"""
         cx, cy = GRID_WIDTH // 2, GRID_HEIGHT // 2
         
-        # 중앙 원형 아레나
-        radius = 8
-        for y in range(GRID_HEIGHT):
-            for x in range(GRID_WIDTH):
-                dist_sq = (x - cx) ** 2 + (y - cy) ** 2
-                if abs(dist_sq - radius * radius) < radius * 2:
-                    self.grid_map[y][x] = TILE_WALL
+        # 모서리에만 작은 장애물 배치 (전략적 엄폐용)
+        corners = [
+            (8, 5, 3, 3),   # 좌상단
+            (GRID_WIDTH - 11, 5, 3, 3),  # 우상단
+            (8, GRID_HEIGHT - 8, 3, 3),  # 좌하단
+            (GRID_WIDTH - 11, GRID_HEIGHT - 8, 3, 3),  # 우하단
+        ]
         
-        # 4개 입구
-        self.grid_map[cy][cx - radius] = TILE_EMPTY
-        self.grid_map[cy][cx + radius] = TILE_EMPTY
-        self.grid_map[cy - radius][cx] = TILE_EMPTY
-        self.grid_map[cy + radius][cx] = TILE_EMPTY
+        for x, y, w, h in corners:
+            for dy in range(h):
+                for dx in range(w):
+                    if 0 < x + dx < GRID_WIDTH - 1 and 0 < y + dy < GRID_HEIGHT - 1:
+                        self.grid_map[y + dy][x + dx] = TILE_WALL
         
-        # 외곽 벽들
-        for i in range(8, 15):
-            self.grid_map[5][i] = TILE_WALL
-            self.grid_map[GRID_HEIGHT - 6][i] = TILE_WALL
-        for i in range(GRID_WIDTH - 15, GRID_WIDTH - 8):
-            self.grid_map[5][i] = TILE_WALL
-            self.grid_map[GRID_HEIGHT - 6][i] = TILE_WALL
+        # 중앙에 작은 십자가 기둥 (시야 차단 최소화)
+        for i in range(-2, 3):
+            if 0 < cx + i < GRID_WIDTH - 1:
+                self.grid_map[cy][cx + i] = TILE_WALL
+            if 0 < cy + i < GRID_HEIGHT - 1:
+                self.grid_map[cy + i][cx] = TILE_WALL
+        
+        # 십자가 중앙은 비우기
+        self.grid_map[cy][cx] = TILE_EMPTY
     
     def _generate_random(self):
         """랜덤 장애물 배치"""

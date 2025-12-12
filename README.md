@@ -217,15 +217,15 @@
 <tr>
 <td width="33%" align="center">
 <img src="images/Stage1-1.png" width="100%"/><br/>
-<b>Stage 1: 튜토리얼</b><br/>
+<b>Stage 1-1: 튜토리얼</b><br/>
 Bug1 × 3<br/>
 ⭐ 기본 조작 익히기
 </td>
 <td width="33%" align="center">
 <img src="images/Stage1-2.png" width="100%"/><br/>
-<b>Stage 1: 열쇠 수집</b><br/>
-첫 열쇠를 획득하는 순간<br/>
-⭐ 미니맵 활용법 학습
+<b>Stage 1-2: 게임플레이</b><br/>
+Bug1 적들과의 추격전<br/>
+⭐ 기본 조작 연습
 </td>
 <td width="33%" align="center">
 <img src="images/Stage2.png" width="100%"/><br/>
@@ -460,8 +460,8 @@ roboescape-path-planning/
 - [ ] 리더보드 및 순위 시스템
 
 ### 🧠 알고리즘 추가
-- [ ] D* / D* Lite (동적 재계획)
-- [ ] Hybrid A* (자동차 경로)
+- [ ] `D* Lite` (동적 재계획)
+- [ ] `Hybrid A*` (자동차 경로)
 - [ ] 강화학습 기반 적 AI
 
 ### 🎨 비주얼 개선
