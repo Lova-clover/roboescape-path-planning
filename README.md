@@ -216,7 +216,7 @@
 <table>
 <tr>
 <td width="50%" align="center">
-<img src="images/Stage1-1.png" width="100%"/><br/>
+<img src="images/Stage1.png" width="100%"/><br/>
 <b>Stage 1: 튜토리얼</b><br/>
 Bug1 × 3<br/>
 ⭐ 기본 조작 익히기
